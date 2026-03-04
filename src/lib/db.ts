@@ -1,6 +1,8 @@
-
 // Simulated SQLite layer using LocalStorage for persistence in this PWA demo.
 // In a production PWA, this would typically involve IndexedDB (e.g., via Dexie.js).
+
+export type InjuryType = 'cut_blade' | 'fall' | 'chemical' | 'machinery' | 'animal' | 'other';
+export type InjurySeverity = 'minor' | 'moderate' | 'severe';
 
 export interface Weighment {
     id: string;
@@ -25,9 +27,9 @@ export interface Task {
 export interface InjuryReport {
     id: string;
     refNumber: string;
-    type: string;
+    type: InjuryType;
     bodyParts: string[];
-    severity: 'minor' | 'moderate' | 'severe';
+    severity: InjurySeverity;
     timestamp: string;
     gps: { lat: number; lng: number };
     photo?: string;

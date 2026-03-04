@@ -84,13 +84,13 @@ const WorkerHistory: React.FC = () => {
                                         <CardContent className="p-4">
                                             <div className="flex justify-between items-start mb-2">
                                                 <div>
-                                                    <div className="font-bold text-lg">{t(r.type as any)}</div>
+                                                    <div className="font-bold text-lg">{t(r.type)}</div>
                                                     <div className="text-[10px] text-muted-foreground font-mono">{r.refNumber}</div>
                                                 </div>
                                                 <Badge className={`${r.severity === 'severe' ? 'bg-red-500' :
-                                                        r.severity === 'moderate' ? 'bg-orange-500' : 'bg-yellow-500'
+                                                    r.severity === 'moderate' ? 'bg-orange-500' : 'bg-yellow-500'
                                                     }`}>
-                                                    {t(r.severity as any)}
+                                                    {t(r.severity)}
                                                 </Badge>
                                             </div>
                                             <div className="flex justify-between items-end mt-4">

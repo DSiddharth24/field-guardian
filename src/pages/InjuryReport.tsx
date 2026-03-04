@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { db } from '@/lib/db';
+import { db, InjuryType, InjurySeverity, InjuryReport as InjuryReportType } from '@/lib/db';
 import {
     Scissors,
     TrendingDown,
@@ -30,8 +30,8 @@ const InjuryReport: React.FC = () => {
     const navigate = useNavigate();
 
     const [stage, setStage] = useState<Stage>(1);
-    const [injuryType, setInjuryType] = useState<string | null>(null);
-    const [severity, setSeverity] = useState<'minor' | 'moderate' | 'severe' | null>(null);
+    const [injuryType, setInjuryType] = useState<InjuryType | null>(null);
+    const [severity, setSeverity] = useState<InjurySeverity | null>(null);
     const [bodyParts, setBodyParts] = useState<string[]>([]);
     const [gps, setGps] = useState<{ lat: number, lng: number } | null>(null);
     const [isCapturing, setIsCapturing] = useState(false);
@@ -49,12 +49,12 @@ const InjuryReport: React.FC = () => {
         }
     }, []);
 
-    const handleStage1 = (type: string) => {
+    const handleStage1 = (type: InjuryType) => {
         setInjuryType(type);
         setStage(2);
     };
 
-    const handleStage2 = (sev: 'minor' | 'moderate' | 'severe') => {
+    const handleStage2 = (sev: InjurySeverity) => {
         setSeverity(sev);
         setStage(3);
     };
@@ -83,12 +83,12 @@ const InjuryReport: React.FC = () => {
     const renderStage1 = () => (
         <div className="grid grid-cols-2 gap-4">
             {[
-                { id: 'cut_blade', icon: Scissors, color: 'bg-blue-50 text-blue-600' },
-                { id: 'fall', icon: TrendingDown, color: 'bg-green-50 text-green-600' },
-                { id: 'chemical', icon: FlaskConical, color: 'bg-purple-50 text-purple-600' },
-                { id: 'machinery', icon: Wrench, color: 'bg-orange-50 text-orange-600' },
-                { id: 'animal', icon: Bug, color: 'bg-yellow-50 text-yellow-600' },
-                { id: 'other', icon: HelpCircle, color: 'bg-slate-50 text-slate-600' },
+                { id: 'cut_blade' as const, icon: Scissors, color: 'bg-blue-50 text-blue-600' },
+                { id: 'fall' as const, icon: TrendingDown, color: 'bg-green-50 text-green-600' },
+                { id: 'chemical' as const, icon: FlaskConical, color: 'bg-purple-50 text-purple-600' },
+                { id: 'machinery' as const, icon: Wrench, color: 'bg-orange-50 text-orange-600' },
+                { id: 'animal' as const, icon: Bug, color: 'bg-yellow-50 text-yellow-600' },
+                { id: 'other' as const, icon: HelpCircle, color: 'bg-slate-50 text-slate-600' },
             ].map((item) => (
                 <Button
                     key={item.id}
@@ -99,7 +99,7 @@ const InjuryReport: React.FC = () => {
                     <div className={`${item.color} p-4 rounded-2xl`}>
                         <item.icon className="h-10 w-10" />
                     </div>
-                    <span className="font-bold text-lg">{t(item.id as any)}</span>
+                    <span className="font-bold text-lg">{t(item.id)}</span>
                 </Button>
             ))}
         </div>
@@ -243,7 +243,11 @@ const InjuryReport: React.FC = () => {
             <div className="max-w-md mx-auto">
                 <div className="flex items-center justify-between mb-8 pt-4">
                     {stage !== 'confirm' && (
-                        <Button variant="ghost" size="icon" onClick={() => stage === 1 ? navigate('/worker') : setStage((prev: any) => prev - 1)}>
+                        <Button variant="ghost" size="icon" onClick={() => {
+                            if (stage === 1) navigate('/worker');
+                            else if (stage === 2) setStage(1);
+                            else if (stage === 3) setStage(2);
+                        }}>
                             <ChevronLeft className="h-6 w-6" />
                         </Button>
                     )}
