@@ -16,6 +16,10 @@ import InspectorEstates from "./pages/InspectorEstates";
 import InspectorGrievances from "./pages/InspectorGrievances";
 import InspectorWorkers from "./pages/InspectorWorkers";
 import InspectorReports from "./pages/InspectorReports";
+import WorkerDashboard from "./pages/WorkerDashboard";
+import InjuryReport from "./pages/InjuryReport";
+import WorkerHistory from "./pages/WorkerHistory";
+import WorkerIDCard from "./pages/WorkerIDCard";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +31,13 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+
+          <Route path="/worker">
+            <Route index element={<WorkerDashboard />} />
+            <Route path="injury-report" element={<InjuryReport />} />
+            <Route path="history" element={<WorkerHistory />} />
+            <Route path="id" element={<WorkerIDCard />} />
+          </Route>
 
           <Route path="/owner" element={<DashboardLayout role="owner" />}>
             <Route index element={<OwnerDashboard />} />
