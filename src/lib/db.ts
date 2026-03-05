@@ -3,6 +3,7 @@
 
 export type InjuryType = 'cut_blade' | 'fall' | 'chemical' | 'machinery' | 'animal' | 'other';
 export type InjurySeverity = 'minor' | 'moderate' | 'severe';
+export type GrievanceType = 'pay' | 'safety' | 'harassment' | 'facilities' | 'tools' | 'other';
 
 export interface Weighment {
     id: string;
@@ -38,6 +39,16 @@ export interface InjuryReport {
     acknowledged: boolean;
 }
 
+export interface GrievanceReport {
+    id: string;
+    refNumber: string;
+    type: GrievanceType;
+    description: string;
+    timestamp: string;
+    synced: boolean;
+    acknowledged: boolean;
+}
+
 export interface WorkerStats {
     name: string;
     id: string;
@@ -66,7 +77,7 @@ const MOCK_STATS: WorkerStats = {
     name: "Gowramma",
     id: "FG-W-56291",
     estate: "Green Valley Estate",
-    photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop",
+    photo: "/worker-portrait.png",
     isSynced: false,
     attendancePresent: true,
     attendanceTime: "07:15 AM",
@@ -131,6 +142,28 @@ class MockDB {
 
         reports.unshift(newReport);
         this.setStorage('injury_reports', reports);
+        return newReport;
+    }
+
+    getGrievances(): GrievanceReport[] {
+        return this.getStorage('grievances', []);
+    }
+
+    saveGrievance(report: Omit<GrievanceReport, 'id' | 'refNumber' | 'synced' | 'acknowledged'>): GrievanceReport {
+        const reports = this.getGrievances();
+        const dateStr = new Date().toISOString().split('T')[0].replace(/-/g, '');
+        const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+
+        const newReport: GrievanceReport = {
+            ...report,
+            id: crypto.randomUUID(),
+            refNumber: `FG-GRV-${dateStr}-${random}`,
+            synced: false,
+            acknowledged: false,
+        };
+
+        reports.unshift(newReport);
+        this.setStorage('grievances', reports);
         return newReport;
     }
 }

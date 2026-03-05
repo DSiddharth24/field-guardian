@@ -266,7 +266,7 @@ const WorkerDashboard: React.FC = () => {
                     <Button
                         variant="ghost"
                         className="flex flex-col items-center gap-1 h-auto py-2 text-slate-600"
-                        onClick={() => { }}
+                        onClick={() => navigate('/worker/grievance')}
                     >
                         <div className="bg-slate-100 p-2 rounded-xl">
                             <MessageSquare className="h-6 w-6" />

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { db, WorkerStats } from '@/lib/db';
 import {
@@ -16,15 +16,48 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const WorkerIDCard: React.FC = () => {
     const { t } = useLanguage();
     const navigate = useNavigate();
     const [stats, setStats] = useState<WorkerStats | null>(null);
+    const cardRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setStats(db.getStats());
     }, []);
+
+    const handleExport = async () => {
+        if (!cardRef.current) return;
+
+        try {
+            const canvas = await html2canvas(cardRef.current, {
+                scale: 3, // High quality
+                useCORS: true,
+                backgroundColor: null
+            });
+            const imgData = canvas.toDataURL('image/png');
+
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            const imgProps = pdf.getImageProperties(imgData);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+            // Center the card on the page
+            const x = (pdfWidth - (pdfWidth * 0.8)) / 2;
+            pdf.addImage(imgData, 'PNG', x, 20, pdfWidth * 0.8, pdfHeight * 0.8);
+            pdf.save(`WorkerID_${stats?.id || 'Card'}.pdf`);
+        } catch (error) {
+            console.error('Export failed:', error);
+        }
+    };
 
     if (!stats) return null;
 
@@ -43,6 +76,7 @@ const WorkerIDCard: React.FC = () => {
                     animate={{ opacity: 1, rotateY: 0 }}
                     transition={{ duration: 0.6 }}
                     className="perspective-1000"
+                    ref={cardRef}
                 >
                     <Card className="bg-white text-slate-900 overflow-hidden rounded-[2rem] shadow-2xl relative">
                         {/* Header / Brand */}
@@ -106,7 +140,7 @@ const WorkerIDCard: React.FC = () => {
                 </motion.div>
 
                 <div className="mt-12 grid grid-cols-2 gap-4">
-                    <Button variant="outline" className="h-14 rounded-2xl border-white/20 hover:bg-white/10 text-white font-bold gap-2">
+                    <Button variant="outline" className="h-14 rounded-2xl border-white/20 hover:bg-white/10 text-white font-bold gap-2" onClick={handleExport}>
                         <Download className="h-5 w-5" /> Export
                     </Button>
                     <Button className="h-14 rounded-2xl bg-white text-slate-900 hover:bg-slate-100 font-bold gap-2">

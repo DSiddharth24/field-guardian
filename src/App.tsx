@@ -20,6 +20,7 @@ import WorkerDashboard from "./pages/WorkerDashboard";
 import InjuryReport from "./pages/InjuryReport";
 import WorkerHistory from "./pages/WorkerHistory";
 import WorkerIDCard from "./pages/WorkerIDCard";
+import GrievanceReport from "./pages/GrievanceReport";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/worker">
             <Route index element={<WorkerDashboard />} />
             <Route path="injury-report" element={<InjuryReport />} />
+            <Route path="grievance" element={<GrievanceReport />} />
             <Route path="history" element={<WorkerHistory />} />
             <Route path="id" element={<WorkerIDCard />} />
           </Route>

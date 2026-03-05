@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { db, Weighment, InjuryReport } from '@/lib/db';
 import {
@@ -17,20 +17,50 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const WorkerHistory: React.FC = () => {
     const { t } = useLanguage();
     const navigate = useNavigate();
     const [weighments, setWeighments] = useState<Weighment[]>([]);
     const [reports, setReports] = useState<InjuryReport[]>([]);
+    const historyRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setWeighments(db.getWeighments());
         setReports(db.getInjuryReports());
     }, []);
 
+    const handleDownloadPDF = async () => {
+        if (!historyRef.current) return;
+
+        try {
+            const canvas = await html2canvas(historyRef.current, {
+                scale: 2,
+                useCORS: true,
+            });
+            const imgData = canvas.toDataURL('image/png');
+
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            const imgProps = pdf.getImageProperties(imgData);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save('WorkerHistory.pdf');
+        } catch (error) {
+            console.error('Download failed:', error);
+        }
+    };
+
     return (
-        <div className="min-h-screen bg-slate-50 p-4 pb-12">
+        <div className="min-h-screen bg-slate-50 p-4 pb-12" ref={historyRef}>
             <div className="max-w-md mx-auto">
                 <div className="flex items-center gap-4 mb-6 pt-4">
                     <Button variant="ghost" size="icon" onClick={() => navigate('/worker')}>
@@ -109,7 +139,7 @@ const WorkerHistory: React.FC = () => {
                     )}
 
                     <div className="pt-4 flex gap-3">
-                        <Button variant="outline" className="flex-1 gap-2 rounded-2xl h-12 font-bold">
+                        <Button variant="outline" className="flex-1 gap-2 rounded-2xl h-12 font-bold" onClick={handleDownloadPDF}>
                             <Download className="h-4 w-4" /> Download PDF
                         </Button>
                         <Button className="flex-1 gap-2 rounded-2xl h-12 font-bold bg-green-600 hover:bg-green-700">
