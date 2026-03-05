@@ -1,6 +1,7 @@
 import { FileText, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { downloadReport } from "@/lib/reportUtils";
 
 const reports = [
   { title: "Regional Compliance Summary", date: "March 2026", type: "Compliance" },
@@ -35,7 +36,12 @@ export default function InspectorReports() {
                 <p className="text-sm text-muted-foreground">{r.date} • {r.type}</p>
               </div>
             </div>
-            <Button variant="outline" size="sm" className="gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              onClick={() => downloadReport(r.title, r.type)}
+            >
               <Download className="h-4 w-4" /> Export PDF
             </Button>
           </motion.div>

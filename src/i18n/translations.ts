@@ -60,6 +60,9 @@ export const translations = {
     submit_grievance: "Submit Grievance",
     grievance_saved: "Grievance Received",
     anonymous_notice: "Your identity is protected under estate policy.",
+    take_photo: "Take Photo",
+    photo_captured: "Photo Captured",
+    retake_photo: "Retake Photo",
   },
   kn: {
     dashboard: "ಕಾರ್ಮಿಕರ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
@@ -119,6 +122,9 @@ export const translations = {
     submit_grievance: "ದೂರು ಸಲ್ಲಿಸಿ",
     grievance_saved: "ದೂರು ಸ್ವೀಕರಿಸಲಾಗಿದೆ",
     anonymous_notice: "ನಿಮ್ಮ ಗುರುತನ್ನು ಎಸ್ಟೇಟ್ ನೀತಿಯಡಿ ರಕ್ಷಿಸಲಾಗಿದೆ.",
+    take_photo: "ಫೋಟೋ ತೆಗೆಯಿರಿ",
+    photo_captured: "ಫೋಟೋ ತೆಗೆಯಲಾಗಿದೆ",
+    retake_photo: "ಮತ್ತೆ ತೆಗೆಯಿರಿ",
   },
   ta: {
     dashboard: "தொழிலாளர் டாஷ்போர்டு",
@@ -178,6 +184,9 @@ export const translations = {
     submit_grievance: "புகார் அளிக்கவும்",
     grievance_saved: "புகார் பெறப்பட்டது",
     anonymous_notice: "உங்கள் அடையாளம் தோட்டக் கொள்கையின் கீழ் பாதுகாக்கப்படுகிறது.",
+    take_photo: "புகைப்படம் எடுக்கவும்",
+    photo_captured: "புகைப்படம் எடுக்கப்பட்டது",
+    retake_photo: "மீண்டும் எடுக்கவும்",
   },
   hi: {
     dashboard: "श्रमिक डैशबोर्ड",
@@ -237,6 +246,9 @@ export const translations = {
     submit_grievance: "शिकायत दर्ज करें",
     grievance_saved: "शिकायत प्राप्त हुई",
     anonymous_notice: "आपकी पहचान एस्टेट नीति के तहत सुरक्षित है।",
+    take_photo: "फोटो लें",
+    photo_captured: "फोटो ली गई",
+    retake_photo: "फिर से लें",
   },
   or: {
     dashboard: "ଶ୍ରମିକ ଡ୍ୟାସବୋର୍ଡ",
@@ -296,6 +308,9 @@ export const translations = {
     submit_grievance: "ଅଭିଯୋଗ କରନ୍ତୁ",
     grievance_saved: "ଅଭିଯୋଗ ଗ୍ରହଣ କରାଗଲା",
     anonymous_notice: "ଏଷ୍ଟେଟ୍ ନୀତି ଅନୁଯାୟୀ ଆପଣଙ୍କ ପରିଚୟ ସୁରକ୍ଷିତ।",
+    take_photo: "ଫଟୋ ଉଠାନ୍ତୁ",
+    photo_captured: "ଫଟୋ ଉଠାଗଲା",
+    retake_photo: "ପୁଣି ଉଠାନ୍ତୁ",
   },
   bn: {
     dashboard: "শ্রমিক ড্যাশবোর্ড",
@@ -355,5 +370,8 @@ export const translations = {
     submit_grievance: "অভিযোগ জানান",
     grievance_saved: "অভিযোগ জমা হয়েছে",
     anonymous_notice: "এস্টেট নীতি অনুসারে আপনার পরিচয় সুরক্ষিত থাকবে।",
+    take_photo: "ছবি তুলুন",
+    photo_captured: "ছবি তোলা হয়েছে",
+    retake_photo: "আবার তুলুন",
   }
 };

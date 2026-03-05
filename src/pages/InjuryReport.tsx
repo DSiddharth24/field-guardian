@@ -35,7 +35,9 @@ const InjuryReport: React.FC = () => {
     const [bodyParts, setBodyParts] = useState<string[]>([]);
     const [gps, setGps] = useState<{ lat: number, lng: number } | null>(null);
     const [isCapturing, setIsCapturing] = useState(false);
+    const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
     const [refNumber, setRefNumber] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     // Capture GPS on mount
     useEffect(() => {
@@ -68,10 +70,28 @@ const InjuryReport: React.FC = () => {
             bodyParts: bodyParts.length > 0 ? bodyParts : ['Body'],
             timestamp: new Date().toISOString(),
             gps: gps,
+            photo: capturedPhoto || undefined,
         });
 
         setRefNumber(report.refNumber);
         setStage('confirm');
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setCapturedPhoto(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const triggerCamera = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
     };
 
     const toggleBodyPart = (part: string) => {
@@ -156,7 +176,18 @@ const InjuryReport: React.FC = () => {
     const renderStage3 = () => (
         <div className="space-y-8">
             <div className="aspect-[4/5] bg-slate-900 rounded-3xl overflow-hidden relative flex items-center justify-center text-white">
-                {isCapturing ? (
+                <input
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    className="hidden"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                />
+
+                {capturedPhoto ? (
+                    <img src={capturedPhoto} className="w-full h-full object-cover" alt="Captured Injury" />
+                ) : isCapturing ? (
                     <div className="flex flex-col items-center gap-4">
                         <div className="w-16 h-16 rounded-full border-4 border-white animate-pulse" />
                         <span className="font-bold">SAVING PHOTO...</span>
@@ -164,18 +195,31 @@ const InjuryReport: React.FC = () => {
                 ) : (
                     <Camera className="h-24 w-24 opacity-20" />
                 )}
-                <div className="absolute bottom-6 left-0 right-0 flex justify-center">
-                    <Button
-                        size="lg"
-                        className="rounded-full w-16 h-16 bg-white hover:bg-slate-100 p-0"
-                        onClick={() => {
-                            setIsCapturing(true);
-                            setTimeout(() => { setIsCapturing(false); handleSubmit(); }, 1000);
-                        }}
-                    >
-                        <div className="w-12 h-12 rounded-full border-2 border-slate-900" />
-                    </Button>
-                </div>
+
+                {!capturedPhoto && (
+                    <div className="absolute bottom-6 left-0 right-0 flex justify-center">
+                        <Button
+                            size="lg"
+                            className="rounded-full w-16 h-16 bg-white hover:bg-slate-100 p-0"
+                            onClick={triggerCamera}
+                        >
+                            <div className="w-12 h-12 rounded-full border-2 border-slate-900" />
+                        </Button>
+                    </div>
+                )}
+
+                {capturedPhoto && (
+                    <div className="absolute top-4 right-4">
+                        <Button
+                            variant="secondary"
+                            size="icon"
+                            className="rounded-full bg-black/50 text-white hover:bg-black/70"
+                            onClick={() => setCapturedPhoto(null)}
+                        >
+                            <X className="h-5 w-5" />
+                        </Button>
+                    </div>
+                )}
             </div>
 
             <div className="flex gap-4">
