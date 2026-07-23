@@ -1,73 +1,155 @@
-# Welcome to your Lovable project
+# FieldGuard
 
-## Project info
+FieldGuard is a platform built for plantation workers who've spent their entire working lives with no proof of their own labor — no record of the kilograms they picked, no safe way to raise a complaint, no visibility into the wages they were owed.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+FieldGuard changes that. Attendance, harvest weight, grievances, injury reports, and payslips — all transparent, all in the worker's hands.
 
-## How can I edit this code?
+## Table of Contents
 
-There are several ways of editing your application.
+- [About the Project](#about-the-project)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Environment Variables](#environment-variables)
+- [Available Scripts](#available-scripts)
+- [Project Structure](#project-structure)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [License](#license)
 
-**Use Lovable**
+## About the Project
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+Plantation and field workers are often left with no formal record of their own labor: no proof of days worked, no log of harvest quantities, no safe channel to report a grievance or injury, and no clarity on how their pay was calculated. This lack of a paper trail leaves workers with little leverage to dispute unfair treatment or missing wages.
 
-Changes made via Lovable will be committed automatically to this repo.
+FieldGuard puts that record directly in the worker's hands. It gives every worker a transparent, accessible log of their attendance, harvest weight, injury reports, grievances, and payslips — built as a web app with a Supabase-backed database so records are persisted, auditable, and available whenever they're needed.
 
-**Use your preferred IDE**
+## Features
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- 🗓️ **Attendance tracking** — a clear, verifiable record of days and hours worked
+- ⚖️ **Harvest weight logging** — records of kilograms picked, tied to the worker who picked them
+- 📢 **Grievance reporting** — a safe channel for workers to raise complaints
+- 🩹 **Injury reporting** — a documented record of workplace injuries
+- 💵 **Payslips** — transparent visibility into wages owed and paid
+- 🔐 Supabase-backed authentication and data storage, so every worker's records are tied securely to their own account
+- 📋 Form-driven data entry with validation (React Hook Form + Zod)
+- 📊 Dashboards and charts for visualizing attendance, harvest, and pay history (Recharts)
+- 📄 Exportable PDF payslips/reports (jsPDF + html2canvas)
+- ⚡ Fast dev/build experience with Vite
+- 🎨 Accessible, consistent UI built on shadcn-ui and Radix primitives
+- 🔄 Client-side data fetching/caching with TanStack React Query
+- 🧭 Client-side routing with React Router
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Tech Stack
 
-Follow these steps:
+**Frontend**
+- [React 18](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/) (build tool & dev server)
+- [Tailwind CSS](https://tailwindcss.com/) + [shadcn-ui](https://ui.shadcn.com/) (Radix UI primitives)
+- [React Router](https://reactrouter.com/)
+- [TanStack React Query](https://tanstack.com/query)
+- [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
+- [Recharts](https://recharts.org/) for data visualization
+- [Framer Motion](https://www.framer.com/motion/) for animation
+- [jsPDF](https://github.com/parallax/jsPDF) + [html2canvas](https://html2canvas.hertzen.com/) for PDF export
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+**Backend / Data**
+- [Supabase](https://supabase.com/) (Postgres database, auth, storage)
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+**Tooling**
+- [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/) for unit/component tests
+- [ESLint](https://eslint.org/) for linting
 
-# Step 3: Install the necessary dependencies.
-npm i
+## Getting Started
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18+) and npm — [install via nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- A [Supabase](https://supabase.com/) project (URL + anon key)
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/DSiddharth24/Field_guardian.git
+
+# Navigate into the project directory
+cd Field_guardian
+
+# Install dependencies
+npm install
+
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The app will be available at `http://localhost:5173` (Vite's default port) unless configured otherwise.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Environment Variables
 
-**Use GitHub Codespaces**
+The project depends on Supabase, so you'll need to provide your project's credentials. Create a `.env` file in the project root:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```env
+VITE_SUPABASE_URL=your-supabase-project-url
+VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+```
 
-## What technologies are used for this project?
+> Check the `supabase/` directory in this repo for any project-specific config or migrations to apply to your Supabase instance.
 
-This project is built with:
+## Available Scripts
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+| Command | Description |
+|---|---|
+| `npm run dev` | Start the Vite development server with hot reload |
+| `npm run build` | Build the app for production |
+| `npm run build:dev` | Build the app in development mode |
+| `npm run preview` | Preview the production build locally |
+| `npm run lint` | Run ESLint across the project |
+| `npm run test` | Run the test suite once (Vitest) |
+| `npm run test:watch` | Run the test suite in watch mode |
 
-## How can I deploy this project?
+## Project Structure
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+```
+Field_guardian/
+├── public/          # Static assets
+├── src/             # Application source code (components, pages, hooks, etc.)
+├── supabase/         # Supabase configuration / migrations
+├── index.html        # App entry HTML
+├── package.json       # Dependencies and scripts
+├── tailwind.config.ts   # Tailwind CSS configuration
+├── vite.config.ts      # Vite configuration
+└── vitest.config.ts     # Vitest configuration
+```
 
-## Can I connect a custom domain to my Lovable project?
+## Testing
 
-Yes, you can!
+This project uses [Vitest](https://vitest.dev/) alongside [Testing Library](https://testing-library.com/) for component and unit tests.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+```bash
+# Run all tests once
+npm run test
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+# Run tests in watch mode
+npm run test:watch
+```
+
+## Deployment
+
+Build a production bundle with:
+
+```bash
+npm run build
+```
+
+This outputs static assets that can be deployed to any static hosting provider (Vercel, Netlify, GitHub Pages, etc.). If this project was originally scaffolded with [Lovable](https://lovable.dev/), it can also be published directly from the Lovable dashboard.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -m 'Add some feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a Pull Request
